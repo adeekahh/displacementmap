@@ -6,7 +6,7 @@ let mapImg = new Image();
 let canvas = document.getElementById("imageCanvas");
 let ctx = canvas.getContext("2d");
 
-let map = document.getElementById("map");
+let map = document.getElementById("mapCanvas");
 let ctxMap = map.getContext("2d");
 
 let output = document.getElementById("output");
@@ -22,10 +22,12 @@ let yPos = null;
 let xVal = null;
 let yVal = null;
 
+let pixelIndex = null;
 let greyvalue = null;
 
 let w = ctx.canvas.width;
 let h = ctx.canvas.height;
+
 let displacementX = null;
 let displacementY = null;
 
@@ -44,8 +46,6 @@ function init() {
       ctxMap.drawImage(mapImg, 0, 0);
 
       getImageData();
-      updatePixels();
-      drawOutputData();
       mouseMoved();
     },
     false
@@ -57,12 +57,11 @@ function init() {
 function updatePixels() {
   for (let i = 0; i < w; i++) {
     for (let j = 0; j < h; j++) {
-      let data = outputData.data;
-
       let imgX = i + xPos;
       let imgY = j + yPos;
 
-      let pixelIndex = 4 * (imgX + imgY * ctx.canvas.width);
+      pixelIndex = 4 * (imgX + yPos * ctx.canvas.width);
+
       greyvalue = mapData.data[pixelIndex] / 255;
 
       offsetX = Math.round(i + displacementX * greyvalue);
@@ -70,13 +69,15 @@ function updatePixels() {
 
       originalPixelIndex = (offsetY * w + offsetX) * 4;
 
-      let pi = 4 * (i + j * ctxOutput.canvas.width);
+      let pi = 4 * (i + j * ctx.canvas.width);
 
-      data[pi + 0] = imageData.data[pixelIndex];
-      data[pi + 1] = imageData.data[pixelIndex + 1];
-      data[pi + 2] = imageData.data[pixelIndex + 2];
-      data[pi + 3] = imageData.data[pixelIndex + 3];
+      outputData.data[pi + 0] = imageData.data[originalPixelIndex + 0];
+      outputData.data[pi + 1] = imageData.data[originalPixelIndex + 1];
+      outputData.data[pi + 2] = imageData.data[originalPixelIndex + 2];
+      outputData.data[pi + 3] = imageData.data[originalPixelIndex + 3];
     }
+
+    console.log(outputData.data[pixelIndex]);
   }
 }
 
@@ -85,17 +86,22 @@ function getImageData() {
   mapData = ctxMap.getImageData(0, 0, w, h);
   outputData = ctxOutput.createImageData(w, h);
 
-  console.log(imageData);
-  console.log(mapData);
-  console.log(outputData);
+  //console.log(imageData);
+
+  //console.log(outputData);
 }
 
 function drawOutputData() {
   ctxOutput.putImageData(outputData, 0, 0);
+  updatePixels();
 }
 
 function mouseMoved() {
   canvas.addEventListener("mousemove", function() {
+    drawOutputData();
+
+    console.log(offsetX, offsetY);
+    //console.log(greyvalue);
     //CLEAR RECT - 500x600
     //ctx.clearRect(0, 0, w, h);
     //PUT IMAGEDATA ON CANVAS
