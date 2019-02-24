@@ -1,0 +1,11 @@
+#wrap {
+  display: flex;
+}
+
+img {
+  display: none;
+}
+
+canvas {
+  height: 600px;
+}
