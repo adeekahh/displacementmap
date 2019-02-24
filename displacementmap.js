@@ -50,8 +50,8 @@ function init() {
     },
     false
   );
-  img.src = "cat.jpg"; // Set source path
-  mapImg.src = "map.jpg";
+  img.src = "image2.png"; // Set source path
+  mapImg.src = "map2.png";
 }
 
 function updatePixels() {
@@ -93,7 +93,7 @@ function drawOutputData() {
 }
 
 function mouseMoved() {
-  canvas.addEventListener("mousemove", function() {
+  output.addEventListener("mousemove", function() {
     drawOutputData();
 
     console.log(offsetX, offsetY);
