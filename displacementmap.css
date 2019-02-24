@@ -5,6 +5,7 @@ img {
 canvas {
   width: 500px;
   height: 600px;
+  border: 10px solid black;
 }
 
 #imageCanvas,
