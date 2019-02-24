@@ -35,7 +35,7 @@ let offsetX = null;
 let offsetY = null;
 let originalPixelIndex = null;
 
-const MAX_MOVEMENT = 25;
+const MAX_MOVEMENT = 10;
 
 window.addEventListener("load", init());
 function init() {
@@ -60,7 +60,7 @@ function updatePixels() {
       let imgX = i + xPos;
       let imgY = j + yPos;
 
-      pixelIndex = 4 * (imgX + yPos * ctx.canvas.width);
+      pixelIndex = 4 * (i + j * ctx.canvas.width);
 
       greyvalue = mapData.data[pixelIndex] / 255;
 
@@ -69,15 +69,11 @@ function updatePixels() {
 
       originalPixelIndex = (offsetY * w + offsetX) * 4;
 
-      let pi = 4 * (i + j * ctx.canvas.width);
-
-      outputData.data[pi + 0] = imageData.data[originalPixelIndex + 0];
-      outputData.data[pi + 1] = imageData.data[originalPixelIndex + 1];
-      outputData.data[pi + 2] = imageData.data[originalPixelIndex + 2];
-      outputData.data[pi + 3] = imageData.data[originalPixelIndex + 3];
+      outputData.data[pixelIndex + 0] = imageData.data[originalPixelIndex + 0];
+      outputData.data[pixelIndex + 1] = imageData.data[originalPixelIndex + 1];
+      outputData.data[pixelIndex + 2] = imageData.data[originalPixelIndex + 2];
+      outputData.data[pixelIndex + 3] = imageData.data[originalPixelIndex + 3];
     }
-
-    console.log(outputData.data[pixelIndex]);
   }
 }
 
